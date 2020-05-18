@@ -29,9 +29,6 @@ cities = []
 
 
 def cityreader(cities=[]):
-    # TODO Implement the functionality to read from the 'cities.csv' file
-    # For each city record, create a new City instance and add it to the
-    # `cities` list
     with open('cities.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         for index, row in enumerate(reader):
@@ -44,8 +41,8 @@ def cityreader(cities=[]):
 cityreader(cities)
 
 # Print the list of cities (name, lat, lon), 1 record per line.
-for c in cities:
-    print(c)
+# for c in cities:
+#     print(c)
 
 # STRETCH GOAL!
 #
@@ -76,15 +73,40 @@ for c in cities:
 # Tucson: (32.1558,-110.8777)
 # Salt Lake City: (40.7774,-111.9301)
 
-# TODO Get latitude and longitude values from the user
+# Collect a latitude and longitude for each of the two coordinates, otherwise, keep asking
+# coord_1, coord_2 = [], []
+# while (len(coord_1) != 2) or (len(coord_2) != 2):
+#     if len(coord_1) != 2:
+#         coord_1 = input(
+#             "Please enter the 1st location's coordinates (e.g. >> 45,-100)\n>> ").split(",")
+#     elif len(coord_2) != 2:
+#         coord_2 = input(
+#             "Please enter the 2nd location's coordinates (e.g. >> 32,-120)\n>> ").split(",")
 
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     # within will hold the cities that fall within the specified region
     within = []
 
-    # TODO Ensure that the lat and lon valuse are all floats
-    # Go through each city and check to see if it falls within
-    # the specified coordinates.
+    # convert collected values into floats
+    coord_1 = [float(lat1), float(lon1)]
+    coord_2 = [float(lat2), float(lon2)]
+
+    # compare and assign to correct variables for lower-left and upper-right
+    if coord_1[0] < coord_2[0]:
+        lat1, lat2 = coord_1[0], coord_2[0]
+    else:
+        lat2, lat1 = coord_1[0], coord_2[0]
+
+    if coord_1[1] < coord_2[1]:
+        lon1, lon2 = coord_1[1], coord_2[1]
+    else:
+        lon2, lon1 = coord_1[1], coord_2[1]
+
+    # loop through cities and pick out values that fall within desired range
+    for city in cities:
+        if (lat1 <= city.lat) and (city.lat <= lat2):
+            if (lon1 <= city.lon) and (city.lon <= lon2):
+                within.append(city)
 
     return within
